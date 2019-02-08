@@ -5,12 +5,12 @@ import ArticleList from './ArticleList';
 import './App.css';
 
 class App extends Component {
-  state = { query: '', articles: [], page: 1, }
+  state = { query: '', articles: [], page: 0, }
 
   onSearchSubmit = async (queryTerm, pageNum) => {
     try {
       const searchResponse = await newsService.getEverything(queryTerm, pageNum);
-      this.setState({ query: queryTerm, articles: searchResponse.data.articles })
+      this.setState({ query: queryTerm, articles: searchResponse.data.articles, page: pageNum })
       console.log(searchResponse);
     }
     catch {
@@ -19,13 +19,13 @@ class App extends Component {
   }
 
   onPageChange = async (isNext) => {
+    const pageNum = this.state.page;
     if (isNext) { 
-      this.setState({ page: this.state.page+1 })
+      await this.onSearchSubmit(this.state.query, pageNum + 1);
     }
-    else if (this.state.page > 0) {
-      this.setState({ page: this.state.page-1 })
+    if (!isNext && this.state.page > 1) {
+      await this.onSearchSubmit(this.state.query, pageNum - 1);
     }
-    await this.onSearchSubmit(this.state.query, this.state.page);
   }
 
   render() {
@@ -37,6 +37,7 @@ class App extends Component {
         <main>
           <SearchBar onSubmit={this.onSearchSubmit} />
           <ArticleList articles={this.state.articles} />
+          <p>Page: {this.state.page}</p>
           <button disabled={this.state.query === '' ? true : false} onClick={e => this.onPageChange(false)}>Previous Page</button>
           <button disabled={this.state.query === '' ? true : false} onClick={e => this.onPageChange(true)}>Next Page</button>
         </main>
