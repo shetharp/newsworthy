@@ -5,17 +5,27 @@ import ArticleList from './ArticleList';
 import './App.css';
 
 class App extends Component {
-  state = { articles: [] }
+  state = { query: '', articles: [], page: 1, }
 
-  onSearchSubmit = async (queryTerm) => {
+  onSearchSubmit = async (queryTerm, pageNum) => {
     try {
-      const searchResponse = await newsService.getEverything(queryTerm);
-      this.setState({ articles: searchResponse.data.articles})
+      const searchResponse = await newsService.getEverything(queryTerm, pageNum);
+      this.setState({ query: queryTerm, articles: searchResponse.data.articles })
       console.log(searchResponse);
     }
     catch {
       console.log('Error accessing API.');
     }
+  }
+
+  onPageChange = async (isNext) => {
+    if (isNext) { 
+      this.setState({ page: this.state.page+1 })
+    }
+    else if (this.state.page > 0) {
+      this.setState({ page: this.state.page-1 })
+    }
+    await this.onSearchSubmit(this.state.query, this.state.page);
   }
 
   render() {
@@ -27,6 +37,8 @@ class App extends Component {
         <main>
           <SearchBar onSubmit={this.onSearchSubmit} />
           <ArticleList articles={this.state.articles} />
+          <button disabled={this.state.query === '' ? true : false} onClick={e => this.onPageChange(false)}>Previous Page</button>
+          <button disabled={this.state.query === '' ? true : false} onClick={e => this.onPageChange(true)}>Next Page</button>
         </main>
         <footer>
           <small>Powered by <a href="https://newsapi.org/">News API</a></small><br />

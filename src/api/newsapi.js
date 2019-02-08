@@ -1,17 +1,29 @@
 import axios from 'axios';
 
+const settings = {
+    apiKey: 'e3766a4e9c53493092fc2b4b263454d6',
+    pageSize: 10
+}
+
 const newsapi = axios.create({
     baseURL: 'https://newsapi.org/',
     params: {
-        apiKey: 'e3766a4e9c53493092fc2b4b263454d6',
+        apiKey: settings.apiKey,
     }
 });
 
-const getEverything = async (queryTerm) => {
+/**
+ * 
+ * @param {string} queryTerm Keywords or phrases to search for. Must be URL-encoded.
+ * @param {number} page Used to page through the results. Value must be >= 1
+ */
+const getEverything = async (queryTerm, page) => {
     const topHeadlinesURL = '/v2/everything';
     const topHeadlinesResponse = await newsapi.get(topHeadlinesURL, {
         params: {
-            q: queryTerm
+            q: queryTerm,
+            page: page,
+            pageSize: settings.pageSize
         }
     });
     return topHeadlinesResponse;
@@ -20,6 +32,7 @@ const getEverything = async (queryTerm) => {
 
 const newsService = {
     newsapi,
-    getEverything
+    settings,
+    getEverything,
 }
 export default newsService;
