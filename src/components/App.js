@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import newsService from '../api/newsapi';
 import SearchBar from './SearchBar';
+import ArticleList from './ArticleList';
 import './App.css';
 
 class App extends Component {
@@ -25,6 +26,7 @@ class App extends Component {
         </header>
         <main>
           <SearchBar onSubmit={this.onSearchSubmit} />
+          <ArticleList articles={this.state.articles} />
         </main>
         <footer>
           <small>Powered by <a href="https://newsapi.org/">News API</a></small><br />
