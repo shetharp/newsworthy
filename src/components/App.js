@@ -5,16 +5,16 @@ import ArticleList from './ArticleList';
 import './App.css';
 
 class App extends Component {
-  state = { query: '', articles: [], page: 0, }
+  state = { query: '', articles: [], page: 0, error: '' }
 
   onSearchSubmit = async (queryTerm, pageNum) => {
     try {
-      const searchResponse = await newsService.getEverything(queryTerm, pageNum);
-      this.setState({ query: queryTerm, articles: searchResponse.data.articles, page: pageNum })
+      const searchResponse = await newsService.getEverything(queryTerm, pageNum)
       console.log(searchResponse);
+      this.setState({ query: queryTerm, articles: searchResponse.data.articles, page: pageNum, error: '' })
     }
-    catch {
-      console.log('Error accessing API.');
+    catch (error) {
+      this.setState({ error: error.message })
     }
   }
 
@@ -36,10 +36,18 @@ class App extends Component {
         </header>
         <main>
           <SearchBar onSubmit={this.onSearchSubmit} />
-          <ArticleList articles={this.state.articles} />
-          <p>Page: {this.state.page}</p>
-          <button disabled={this.state.query === '' ? true : false} onClick={e => this.onPageChange(false)}>Previous Page</button>
-          <button disabled={this.state.query === '' ? true : false} onClick={e => this.onPageChange(true)}>Next Page</button>
+          {!this.state.error &&
+            <ArticleList 
+              query={this.state.query} 
+              articles={this.state.articles} 
+              page={this.state.page} 
+              onPageChange={this.onPageChange} 
+            />
+          }
+          {this.state.error &&
+            <div style={{ color: 'mediumvioletred' }}>{this.state.error}</div>
+          }
+          
         </main>
         <footer>
           <small>Powered by <a href="https://newsapi.org/">News API</a></small><br />

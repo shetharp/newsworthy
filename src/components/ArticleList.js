@@ -12,7 +12,16 @@ function ArticleList(props) {
     );
   });
 
-  return <ol>{articles}</ol>
+  return (
+    <section>
+      <ol>{articles}</ol>
+      <div>
+        <p>Page: {props.page}</p>
+        <button disabled={props.query === '' || props.page <= 1 ? true : false} onClick={e => props.onPageChange(false)}>Previous Page</button>
+        <button disabled={props.query === '' ? true : false} onClick={e => props.onPageChange(true)}>Next Page</button>
+      </div>
+    </section>
+  );
 }
 
 export default ArticleList;
