@@ -13,7 +13,7 @@ const newsapi = axios.create({
 });
 
 /**
- *
+ * Returns a Promise for the API response containing a list of articles
  * @param {string} queryTerm Keywords or phrases to search for. Must be URL-encoded.
  * @param {number} page Used to page through the results. Value must be >= 1
  */
@@ -30,8 +30,8 @@ const getEverything = async (queryTerm, page) => {
 };
 
 const newsService = {
-  newsapi,
   settings,
+  newsapi,
   getEverything
 };
 export default newsService;

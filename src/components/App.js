@@ -4,6 +4,7 @@ import SearchBar from './SearchBar';
 import ArticleList from './ArticleList';
 import './App.css';
 
+
 class App extends Component {
   state = { query: '', articles: [], page: 0, error: '' }
 
@@ -28,6 +29,27 @@ class App extends Component {
     }
   }
 
+  renderSearchResults() {
+    if (this.state.articles.length !== 0) {
+      return (
+        <ArticleList 
+          query={this.state.query} 
+          articles={this.state.articles} 
+          page={this.state.page} 
+          onPageChange={this.onPageChange} 
+        />
+      );
+    }
+    if (this.state.articles.length === 0 && this.state.query) {
+      return (
+        <section>
+          <strong style={{ color: 'mediumslateblue' }}>No results found.</strong>
+        </section>
+      );
+    
+    }
+  }
+
   render() {
     return (
       <div className="App">
@@ -36,14 +58,9 @@ class App extends Component {
         </header>
         <main>
           <SearchBar onSubmit={this.onSearchSubmit} />
-          {!this.state.error &&
-            <ArticleList 
-              query={this.state.query} 
-              articles={this.state.articles} 
-              page={this.state.page} 
-              onPageChange={this.onPageChange} 
-            />
-          }
+          {this.renderSearchResults()}
+
+          
           {this.state.error &&
             <div style={{ color: 'mediumvioletred' }}>{this.state.error}</div>
           }
