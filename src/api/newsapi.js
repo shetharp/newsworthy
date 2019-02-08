@@ -7,11 +7,11 @@ const newsapi = axios.create({
     }
 });
 
-const getEverything = async (query) => {
+const getEverything = async (queryTerm) => {
     const topHeadlinesURL = '/v2/everything';
     const topHeadlinesResponse = await newsapi.get(topHeadlinesURL, {
         params: {
-            q: query
+            q: queryTerm
         }
     });
     return topHeadlinesResponse;

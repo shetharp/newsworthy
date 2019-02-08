@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import newsService from '../api/newsapi';
+import SearchBar from './SearchBar';
 import './App.css';
 
 class App extends Component {
-  testAPI = async () => {
+  state = { articles: [] }
+
+  onSearchSubmit = async (queryTerm) => {
     try {
-      const everythingResponse = await newsService.getEverything('climate');
-      console.log(everythingResponse);
+      const searchResponse = await newsService.getEverything(queryTerm);
+      this.setState({ articles: searchResponse.data.articles})
+      console.log(searchResponse);
     }
     catch {
-      console.log('API not working.');
+      console.log('Error accessing API.');
     }
   }
 
@@ -20,7 +24,7 @@ class App extends Component {
           <h1>Newsworthy</h1>
         </header>
         <main>
-          <button onClick={this.testAPI}>Get Top Headlines</button>
+          <SearchBar onSubmit={this.onSearchSubmit} />
         </main>
         <footer>
           <small>Powered by <a href="https://newsapi.org/">News API</a></small><br />
