@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SearchBar> should maintain state when typing 1`] = `
+<SearchBar>
+  <div>
+    <form
+      onSubmit={[Function]}
+    >
+      <label
+        htmlFor="news-search"
+      >
+        News Search
+      </label>
+      <input
+        name="news-search"
+        onChange={[Function]}
+        type="text"
+        value="climate"
+      />
+    </form>
+  </div>
+</SearchBar>
+`;
+
+exports[`<SearchBar> should render correctly 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <label
+      htmlFor="news-search"
+    >
+      News Search
+    </label>
+    <input
+      name="news-search"
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+  </form>
+</div>
+`;
+
+exports[`<SearchBar> should update state when typing into input 1`] = `
+<SearchBar>
+  <div>
+    <form
+      onSubmit={[Function]}
+    >
+      <label
+        htmlFor="news-search"
+      >
+        News Search
+      </label>
+      <input
+        name="news-search"
+        onChange={[Function]}
+        type="text"
+        value="climate"
+      />
+    </form>
+  </div>
+</SearchBar>
+`;
